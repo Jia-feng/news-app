@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/style.css" />
+		<style type="text/css">
+			body {
+				background: #FFF;
+			}
+
+			.mui-content>.mui-table-view:first-child {
+				margin-top: -1px;
+			}
+
+			#slider {
+				top: 1.25rem!important;
+			}
+		</style>
+		<script type="text/javascript" src="../js/phone.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav ws-formSearch">
+			<form action="" method="post">
+				<div class="mui-input-row mui-search ws-search">
+					<input type="search" class="mui-input-clear" name="indexSearch" placeholder="春晚抖音分5亿红包 | 李思思荧光口红......">
+				</div>
+			</form>
+		</header>
+		<div class="mui-content" id="ws-indexList">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<div class="mui-scroll">
+						<a class="mui-control-item mui-active" href="#item1mobile">
+							推荐
+						</a>
+					</div>
+				</div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item4mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item5mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item6mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<script src="../js/jquery.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.pullToRefresh.js"></script>
+		<script src="../js/mui.pullToRefresh.material.js"></script>
+		<script>
+			mui.init();
+			var CPACTH = 'http://wow.angwei.net';
+			var listLegth = 6;
+			var $$ = jQuery.noConflict();
+			var listNav = [];
+
+			mui.ajax(CPACTH + '/m/article/getListArticle.json', {
+				data: '',
+				dataType: 'json', //服务器返回json格式数据
+				type: 'get', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success: function(data) {
+					//服务器返回响应，根据响应结果，分析是否登录成功；
+
+					var dataJson = data;
+					var datas = dataJson.data;
+					//alert(JSON.stringify(data));
+					if(dataJson.metaInfo.code == 0) {
+						var htmls = '',
+							htmls2 = '';
+						for(var i = 0; i < datas.categorys.length; i++) {
+							var list = {
+								'id': datas.categorys[i].id,
+								'caption': datas.categorys[i].caption,
+								'pageCount': 1,
+								'page': 1
+							};
+							var active = '';
+							if(i == 0) {
+								active = 'mui-active';
+							} else {
+								active = '';
+							}
+							htmls += "<a class='mui-control-item " + active + "' href='#item" + (i + 1) + "mobile'>" + datas.categorys[i].caption + "</a>";
+							htmls2 += "<div id='item" + (i + 1) + "mobile' class='mui-slider-item mui-control-content " + active + "'> <div class='mui-scroll-wrapper'> <div class='mui-scroll> <ul class='mui-table-view'></ul></div></div></div>";
+							listNav.push(list);
+						}
+						$$("#sliderSegmentedControl .mui-scroll").html(htmls);
+						//$$(".mui-slider-group").html(htmls2);
+						//createFragment(ul,0, listLegth);
+						//$$(".mui-slider-group >div").eq(0).find("ul").html(createFragment(0, listLegth))
+					} else {
+						mui.toast('网络错误，请重试！', {
+							duration: 'long',
+							type: 'div'
+						})
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					console.log(type);
+				}
+			});
+			(function($) {
+				//阻尼系数
+				var deceleration = mui.os.ios ? 0.001 : 0.009;
+				$('.mui-scroll-wrapper').scroll({
+					bounce: false,
+					indicators: true, //是否显示滚动条
+					deceleration: deceleration
+				});
+				$.ready(function() {
+					//循环初始化所有下拉刷新，上拉加载。
+					$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+						$(pullRefreshEl).pullToRefresh({
+							down: {
+								/*callback: function() {
+									var self = this;
+									setTimeout(function() {
+										var ul = self.element.querySelector('.mui-table-view');
+										ul.insertBefore(createFragment(ul, index, 10, true), ul.firstChild);
+										self.endPullDownToRefresh();
+									}, 1000);
+								}*/
+							},
+							up: {
+								auto: true, //自动执行一次上拉加载，可选；
+								show: true, //显示底部上拉加载提示信息，可选；
+								contentrefresh: '正在加载...', //上拉进行中提示信息
+								contentnomore: '没有更多数据了', //上拉无更多信息时提示信息
+								callback: function() {
+									var self = this;
+									setTimeout(function() {
+										if(listNav[index].page <= listNav[index].pageCount) {
+											var ul = self.element.querySelector('.mui-table-view');
+											createFragment(ul, index, listLegth, '');
+											self.endPullUpToRefresh();
+										} else {
+											self.endPullUpToRefresh(true);
+										}
+
+									}, 1000);
+								}
+							}
+						});
+					});
+					//时间戳转换成时间格式方法
+					var datetime = function(time) {
+						var date = new Date(parseInt(time));
+						var year = date.getFullYear();
+						var mon = date.getMonth() + 1;
+						var day = date.getDate();
+						var hours = date.getHours();
+						var minu = date.getMinutes();
+						var sec = date.getSeconds();
+						return mon + '-' + day + ' ' + hours + ':' + minu;
+					};
+					var createFragment = function(ul, index, count, keyWord, reverse) {
+						var fragment = document.createDocumentFragment();
+						var li;
+						mui.ajax(CPACTH + '/m/article/getListArticle.json?categoryId=' + listNav[index].id + '&key=' + keyWord + '&pageSize=' + count + '&page=' + listNav[index].page, {
+							data: '',
+							dataType: 'json', //服务器返回json格式数据
+							type: 'get', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							success: function(data) {
+								//服务器返回响应，根据响应结果，分析是否登录成功；
+								var dataJson = data;
+								var datas = dataJson.data;
+								if(dataJson.metaInfo.code == 0) {
+									listNav[index].page = datas.pageResult.page + 1;
+									listNav[index].pageCount = datas.pageResult.pageCount;
+									var listBox = datas.pageResult.list;
+									for(var i = 0; i < listBox.length; i++) {
+										li = document.createElement('li');
+										var tuiJ = '';
+										if(listBox[i].recommend == 1) {
+											tuiJ = "<span class='ws-hot'>推荐</span>";
+										}
+
+										if(listBox[i].kind == 1) {
+											li.className = 'mui-table-view-cell mui-media ws-leftImg';
+											li.innerHTML = "<a class='mui-navigate-right' href='ws-info.html' data-wid='" + listBox[i].linkurl + "'><div class='mui-media-body'><h3>" + listBox[i].title + "</h3><div>" + tuiJ + "<span class='ws-user'>" + listBox[i].author + "</span><span class='ws-ping'>" + listBox[i].hits + "查看</span> <span class='ws-time'>" + datetime(listBox[i].created) + "</span></div></div></a>";
+										} else if(listBox[i].kind == 2) {
+											li.className = 'mui-table-view-cell mui-media';
+											li.innerHTML = "<a class='mui-navigate-right' href='ws-info.html' data-wid='" + listBox[i].linkurl + "'><div class='mui-media-body'><h3>" + listBox[i].title + "</h3><div>" + tuiJ + "<span class='ws-user'>" + listBox[i].author + "</span> <span class='ws-ping'>" + listBox[i].hits + "查看</span> <span class='ws-time'>" + datetime(listBox[i].created) + "</span> </div> </div> <img class='mui-media-object mui-pull-left' src='" + listBox[i].url + "'></a>";
+										} else if(listBox[i].kind == 3) {
+											li.className = 'mui-table-view-cell mui-media ws-ggList';
+											li.innerHTML = "<a class='mui-navigate-right' href='ws-info.html' data-wid='" + listBox[i].linkurl + "'><div class='mui-media-body'><h3>" + listBox[i].title + "</h3><div class='ws-ggImg'> <img src='" + listBox[i].imgs[0] + "' alt='' /><img src='" + listBox[i].imgs[1] + "' alt='' /><img src='" + listBox[i].imgs[2] + "' alt='' /></div><div>" + tuiJ + "<span class='ws-user'>" + listBox[i].author + "</span> <span class='ws-ping'>" + listBox[i].hits + "查看</span> <span class='ws-time'>" + datetime(listBox[i].created) + "</span> </div> </div></a>";
+										}
+										fragment.appendChild(li);
+									}
+									ul.appendChild(fragment);
+									$('.mui-scroll-wrapper').scroll({
+										bounce: false,
+										indicators: true, //是否显示滚动条
+										deceleration: deceleration
+									});
+								} else {
+									mui.toast('网络错误，请重试！', {
+										duration: 'long',
+										type: 'div'
+									})
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								//异常处理；
+							}
+						});
+					};
+					//主列表点击事件
+					mui('.mui-scroll-wrapper').on('tap', 'a', function() {
+						var href = this.getAttribute('href');
+
+						//非plus环境，直接走href跳转
+						if(!mui.os.plus) {
+							location.href = href;
+							return;
+						}
+
+						var id = this.getAttribute("data-wid");
+						if(!id) {
+							id = href;
+						}
+
+						if(href && ~href.indexOf('.html')) {
+							//打开窗口的相关参数
+							var options = {
+								styles: {
+									popGesture: "close"
+								},
+								extras: {
+									id: id
+								}
+							};
+							//如下场景不适用下拉回弹：
+							//1、单webview下拉刷新；2、底部有fixed定位的div的页面
+							if(!~id.indexOf('pullrefresh.html') && !~href.indexOf("examples/tabbar.html") && !~href.indexOf("list-to-detail/listview.html")) {
+								options.styles.bounce = "vertical";
+							}
+							//图标页面需要启动硬件加速
+							if(~id.indexOf('icons.html') || ~id.indexOf("echarts.html")) {
+								options.styles.hardwareAccelerated = true;
+							}
+							if(~id.indexOf('im-chat.html')) {
+								options.extras.acceleration = "none";
+							}
+
+							var titleType = this.getAttribute("data-title-type");
+							if(titleType && titleType.indexOf("native") > -1) { //原生导航
+								options.styles.titleNView = {
+									autoBackButton: true,
+									backgroundColor: '#f7f7f7',
+									titleText: this.innerHTML.trim(),
+									splitLine: {
+										color: '#cccccc'
+									}
+								};
+
+								options.show = {
+									event: 'loaded'
+								}
+								//有原生标题的情况下，就不需要waiting框了
+								options.waiting = {
+									autoShow: false
+								}
+
+								//透明渐变导航,增加类型设置
+								if(titleType == "transparent_native") {
+									options.styles.titleNView.type = "transparent";
+								}
+							} else {
+								//非原生导航，需要设置顶部状态栏占位
+								options.styles.statusbar = {
+									background: "#f7f7f7"
+								}
+							}
+							//打开新窗口
+							mui.openWindow(href, id, options);
+						}
+					});
+
+				});
+
+				//头部搜索事件
+				$$("form").on('submit', function(e) {
+					var text = $$("input[name=indexSearch]").val();
+					if(text == '') {
+						mui.toast('搜索不能为空哦！', {
+							duration: 'long',
+							type: 'div'
+						});
+						return false;
+					}
+					document.activeElement.blur();
+					mui.openWindow({
+						url: 'ws-list2.html',
+						id: text,
+						extras: {
+							keyWord: text //搜索关键词
+						}
+					});
+					return false;
+				})
+				//导航切换
+				//滑动选项卡切换导航内容
+				document.querySelector('.mui-slider').addEventListener('slide', function(event) {
+					//注意slideNumber是从0开始的；
+					$$('#sliderSegmentedControl .mui-scroll a').removeClass('mui-active');
+					$$('#sliderSegmentedControl .mui-scroll a').eq(event.detail.slideNumber).addClass('mui-active');
+				});
+
+			})(mui);
+		</script>
+	</body>
+
+</html>

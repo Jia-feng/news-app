@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <title></title>
+        <link href="css/mui.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="css/public.css" />
+        <link rel="stylesheet" href="css/index.css" />
+        <link rel="stylesheet" href="css/font.css" />
+        <link rel="stylesheet" href="//at.alicdn.com/t/font_502516_986m76od7r1thuxr.css" />
+        <script type="text/javascript">
+            setRem();
+
+            function setRem() {
+                var html, dpi, vw, sca;
+                html = document.getElementsByTagName('html')[0];
+                vw = window.screen.width;
+                dpi = window.devicePixelRatio;
+                html.style.fontSize = (vw * dpi) / 10 + 'px';
+                html.setAttribute('dpi', dpi);
+            }
+
+            window.addEventListener('resize', setRem, false);
+            window.addEventListener('orientationchange', setRem, false);
+        </script>
+        <style>
+            .mui-slider .mui-slider-group .mui-slider-item {
+                width: 100%;
+                height: 200px;
+            }
+
+            .mui-slider .mui-slider-group .mui-slider-item:nth-child(1) {
+                background-color: red;
+            }
+
+            .mui-slider .mui-slider-group .mui-slider-item:nth-child(2) {
+                background-color: green;
+            }
+
+            .mui-slider .mui-slider-group .mui-slider-item:nth-child(3) {
+                background-color: gold;
+            }
+
+            .mui-slider .mui-slider-group .mui-slider-item:nth-child(4) {
+                background-color: grey;
+            }
+
+            .nav {
+                width: 100%;
+                overflow: hidden;
+            }
+
+            .nav div {
+                width: 25%;
+                border: 1px solid #000;
+                box-sizing: border-box;
+                float: left;
+            }
+
+            .nav div.active {
+                background-color: red;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <header class="mui-bar mui-bar-nav">
+            <h1 class="mui-title">首页</h1>
+            <div class="tit-icons">
+                <span class="tit-icon tit-icon1  icon icon-search"></span>
+                <span class="tit-icon tit-icon2  icon icon-iconfontxiaoxitixing"></span>
+            </div>
+        </header>
+
+        <nav class="mui-bar mui-bar-tab">
+            <a class="mui-tab-item mui-active">
+                <span class="mui-tab-label">首页</span>
+            </a>
+            <a class="mui-tab-item">
+                <span class="mui-tab-label">最新资讯</span>
+            </a>
+            <a class="mui-tab-item">
+                <span class="mui-tab-label">我的</span>
+            </a>
+
+        </nav>
+        <div class="mui-content">
+            <nav class="nav">
+                <div class="active">首页</div>
+                <div>联系</div>
+                <div>我们</div>
+                <div>miss</div>
+            </nav>
+
+            <div class="mui-slider" id="swiper1">
+                <div class="mui-slider-group">
+                    <div class="mui-slider-item">
+                        首页
+                    </div>
+                    <div class="mui-slider-item">
+                        联系
+                    </div>
+                    <div class="mui-slider-item">
+                        我们
+                    </div>
+                    <div class="mui-slider-item">
+                        miss
+                    </div>
+                </div>
+            </div>
+            <div id="info"></div>
+        </div>
+
+        <script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" charset="utf-8">
+            mui.init();
+            var swiper1 = mui('#swiper1');
+            swiper1.slider({
+                //          interv al:5000
+            });
+
+　　//http://dev.dcloud.net.cn/mui/util/ mui选择器
+
+　　//mui使用css选择器获取HTML元素，返回mui对象数组。
+　　//mui("p")：//选/取所有<p>元素
+　　//mui("p.title")：//选取所有包含.title类的<p>元素
+
+　　//若要将mui对象转化成dom对象，可使用如下方法（类似jquery对象转成dom对象）：
+
+　　//obj1是mui对象
+　　var obj1 = mui("#title");
+　　//obj2是dom对象
+　　var obj2 = obj1[0];
+
+                //addEventListener单个绑定事件
+                /*var  div=document.querySelectorAll('.nav div');
+                for (var i = 0; i < div.length; i++) {
+                    div[i].index=i;
+                    div[i].addEventListener('tap',function(){
+                        alert(this.index)
+                    },false)
+                }*/
+                //on事件委托绑定点击单个或群组事件
+                /*mui('.nav').on('tap','div',function(){
+                    alert()
+                })*/
+
+
+            //滑动选项卡切换导航内容
+            var  div=document.querySelectorAll('.nav div')
+            document.querySelector('.mui-slider').addEventListener('slide', function(event) {
+                //注意slideNumber是从0开始的；
+                //            document.getElementById("info").innerText = "你正在看第"+(event.detail.slideNumber+1)+"张图片";
+
+                switch(event.detail.slideNumber) {
+                    case 0:
+                       for (var i = 0; i < div.length; i++) {
+                           div[i].className='';
+                       }
+                        div[0].className='active'
+                        break;
+                    case 1:
+                        for (var i = 0; i < div.length; i++) {
+                           div[i].className='';
+                       }
+                        div[1].className='active'
+                        break;
+                    case 2:
+                        for (var i = 0; i < div.length; i++) {
+                           div[i].className='';
+                       }
+                        div[2].className='active'
+                        break;
+                    case 3:
+                        for (var i = 0; i < div.length; i++) {
+                           div[i].className='';
+                       }
+                        div[3].className='active'
+                        break;
+                    default:
+                        break;
+                }
+            });
+            //点击导航内容滑动切换选项卡
+            var  This=div[0];
+            for (var i = 0; i < div.length; i++) {
+                    div[i].index=i;
+                    div[i].addEventListener('tap',function(){
+                        This.className='';
+                        this.className='active';
+                        This=this;
+                        mui('#swiper1').slider().gotoItem(this.index);
+
+                    },false)
+                }
+
+        </script>
+
+    </body>
+
+</html>

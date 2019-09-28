@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>探索</title>
+		<link rel="stylesheet" href="../css/tan.css" />
+		<script src="../js/jquery.js"></script>
+		<script type="text/javascript" src="../js/phone.js"></script>
+	</head>
+
+	<body class="zoom-large data-close data-open data-close set-speed controls-open view-2D">
+		<div id="universe" class="scale-stretched">
+			<div id="galaxy">
+				<div id="solar-system" class="earth">
+					<div id="mercury" class="orbit">
+						<div class="pos">
+							<div class="planet">
+								Travelers
+							</div>
+						</div>
+						<div class="pos pos2">
+							<div class="planet">
+								Zt木X木B彡
+							</div>
+						</div>
+					</div>
+					<div id="venus" class="orbit">
+						<div class="pos">
+							<div class="planet">
+								北城相拥 -
+							</div>
+						</div>
+						<div class="pos pos2">
+							<div class="planet">
+								A潮品部落
+							</div>
+						</div>
+						<div class="pos pos3">
+							<div class="planet">
+								JD-摩托车-王巍
+							</div>
+						</div>
+					</div>
+					<div id="earth" class="orbit">
+						<div class="pos">
+							<div class="planet">
+								Shadow lady
+							</div>
+						</div>
+						<div class="pos pos2">
+							<div class="planet">
+								丰书会
+							</div>
+						</div>
+						<div class="pos pos3">
+							<div class="planet">
+								祠梦余生
+							</div>
+						</div>
+						<div class="pos pos4">
+							<div class="planet">
+								彼岸の夢
+							</div>
+						</div>
+					</div>
+					<div id="mars" class="orbit">
+						<div class="pos">
+							<div class="planet">
+								Shadow lady
+							</div>
+						</div>
+						<div class="pos pos2">
+							<div class="planet">
+								丰书会
+							</div>
+						</div>
+						<div class="pos pos3">
+							<div class="planet">
+								祠梦余生
+							</div>
+						</div>
+						<div class="pos pos4">
+							<div class="planet">
+								彼岸の夢
+							</div>
+						</div>
+						<div class="pos pos5">
+							<div class="planet">
+								彼岸の夢
+							</div>
+						</div>
+						<div class="pos pos6">
+							<div class="planet">
+								彼岸の夢
+							</div>
+						</div>
+					</div>
+					<div id="sun">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="searchBox">
+			<form action="">
+				<input type="text" name="searchCont" placeholder="输入搜索" />
+				<button type="submit">搜索</button>
+			</form>
+		</div>
+		<script src="../js/jquery.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script>
+			var $$ = jQuery.noConflict();
+			$(function() {
+
+				var body = $("body"),
+					universe = $("#universe"),
+					solarsys = $("#solar-system");
+				/*
+				  var init = function() {
+				    body.removeClass('view-2D opening').addClass("view-3D").delay(2000).queue(function() {
+				      $(this).removeClass('hide-UI').addClass("set-speed");
+				      $(this).dequeue();
+				    });
+				  };*/
+
+				var setView = function(view) {
+					universe.removeClass().addClass(view);
+				};
+
+				$("#toggle-data").click(function(e) {
+					body.toggleClass("data-open data-close");
+					e.preventDefault();
+				});
+
+				$("#toggle-controls").click(function(e) {
+					body.toggleClass("controls-open controls-close");
+					e.preventDefault();
+				});
+
+				$("#data a").click(function(e) {
+					var ref = $(this).attr("class");
+					solarsys.removeClass().addClass(ref);
+					$(this).parent().find('a').removeClass('active');
+					$(this).addClass('active');
+					e.preventDefault();
+				});
+				var interval;
+				$("input").focus(function(e) {
+					interval = setInterval(function() {
+						document.body.scrollTop = document.body.scrollHeight
+					}, 100);
+				})
+				$("input").blur(function(e) {
+					clearInterval(interval);
+				});
+				//头部搜索事件
+				$$("form").on('submit', function(e) {
+					var text = $$("input[name=searchCont]").val();
+					if(text == '') {
+						mui.toast('搜索不能为空哦！', {
+							duration: 'long',
+							type: 'div'
+						});
+						return false;
+					}
+					document.activeElement.blur();
+					mui.openWindow({
+						url: 'ws-list2.html',
+						id:text,
+						extras: {
+							keyWord: text //搜索关键词
+						}
+					});
+					return false;
+				})
+
+			});
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,82 @@
+{
+  "examples/setting.html": {
+    "href": "examples/setting.html",
+    "resources": [
+      "examples/js/mui.min.js",
+      "examples/js/mui.view.js",
+      "examples/js/feedback.js",
+      "examples/img/logo.png",
+      "examples/css/mui.min.css",
+      "examples/css/feedback.css",
+      "css/seting.css"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "examples/ws-info.html": {
+    "href": "examples/ws-info.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/style.css",
+      "js/phone.js",
+      "js/mui.min.js",
+      "images/nws-shili.png"
+    ],
+    "refer": [
+      "examples/ws-info.html"
+    ],
+    "priority": 0
+  },
+  "examples/pullrefresh.html": {
+    "href": "examples/pullrefresh.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/style.css",
+      "js/phone.js",
+      "js/mui.min.js",
+      "js/mui.pullToRefresh.js",
+      "js/mui.pullToRefresh.material.js",
+      "images/nws-shili.png"
+    ],
+    "refer": [
+      "examples/pullrefresh.html",
+      "examples/ws-info.html",
+      "examples/ws-list.html",
+      "examples/ws-list2.html"
+    ],
+    "priority": 0
+  },
+  "index.html": {
+    "href": "index.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/style.css",
+      "js/mui.min.js",
+      "js/jquery.js",
+      "js/phone.js",
+      "examples/pullrefresh.html"
+    ],
+    "refer": [
+      "examples/setting.html",
+      "examples/pullrefresh.html",
+      "examples/ws-tan.html"
+    ],
+    "priority": 0
+  },
+  "examples/ws-tan.html": {
+    "refer": [
+      "examples/ws-tan.html",
+      "examples/ws-list.html"
+    ]
+  },
+  "examples/ws-list.html": {
+    "refer": [
+      "examples/ws-info.html"
+    ]
+  },
+  "examples/ws-list2.html": {
+    "refer": [
+      "examples/ws-info.html"
+    ]
+  }
+}

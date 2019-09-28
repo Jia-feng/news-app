@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>内容页</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript" src="../js/phone.js"></script>
+		<style type="text/css">
+			body {
+				background: #FFF;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav ws-info-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">哇塞</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" id="wsInfoCont">
+			<div class="mui-scroll">
+			<div class="mui-content-padded">
+				<h2></h2>
+				<div class="ws-infoUser">
+					<div class="left">
+						<p class="ws-user"></p>
+						<p><span class="ws-time"></span> <span class="ws-pinglun"><i></i>查看</span></p>
+					</div>
+					<div class="right">
+						<a href="javascript:;">关注</a>
+					</div>
+				</div>
+				<div class="ws-infoText">
+					<!--<img src="../images/nws-shili.png" alt="" />
+					<p>2016年2月19日，习近平在北京主持召开党的新闻舆论工作座谈会并发表重要讲话。</p>
+					<p>三年前，习近平总书记主持召开党的新闻舆论工作座谈会，对新闻舆论工作者提出了殷切期望。 三年来，广大新闻舆论工作者以总书记重要讲话精神为根本遵循，牢记职责使命，锐意改革创新，新闻舆论工作呈现出崭新气象，进发出巨大活力。 </p>
+					<p>做党和人民信赖的新闻工作者，习近平强调打造一 支过硬、本领高强、求实创新、能打胜仗的宣传思想工作队伍。</p>-->
+				</div>
+			</div>
+			<div class="ws-tuiList">
+				<ul class="mui-table-view">
+
+				</ul>
+
+			</div>
+			<div class="ws-pingBox" style="display: none;">
+				<ul>
+					<li>
+						<div class="ws-leftPhoto">
+							<img src="../images/nws-shili.png" alt="" />
+						</div>
+						<div class="ws-rightCont">
+							<h4>野史日记 <span>13</span></h4>
+							<div>
+								2019年2月19日，星期二，爱你的人看到你的消息。
+							</div>
+							<span class="ws-time">02-19 12:22</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			</div>
+		</div>
+		<div class="ws-addPing">
+				<form action="">
+					<input type="text" name="addPingBtn" placeholder="写评论..." class="addPingBtn" />
+				</form>
+				<div class="addPing-icon">
+					<span class="addPing-xiaoxi"><!--<i>687</i>--></span>
+					<span class="addPing-shoucang"></span>
+					<span class="addPing-dianzan"></span>
+					<span class="ws-goShare" id="share"></span>
+				</div>
+			</div>
+		<script src="../js/jquery.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.view.js "></script>
+		<script type="text/javascript" charset="utf-8">
+			var CPACTH = 'http://wow.angwei.net';
+			var $$ = jQuery.noConflict();
+			mui.init({
+				gestureConfig: {
+					longtap: true
+				},
+				swipeBack: true //启用右滑关闭功能
+			});
+			(function($) {
+				//阻尼系数
+				var deceleration = mui.os.ios ? 0.001 : 0.009;
+				$('.mui-scroll-wrapper').scroll({
+					bounce: false,
+					indicators: true, //是否显示滚动条
+					deceleration: deceleration
+				});
+				})(mui);
+			//处理点击事件，需要打开原生浏览器
+			mui('body').on('tap', '.ws-tuiList a', function(e) {
+				var href = this.getAttribute('href');
+				if(href) {
+					if(window.plus) {
+						plus.runtime.openURL(href);
+					} else {
+						location.href = href;
+					}
+				}
+			});
+			$$("input").focus(function(e) {
+				setTimeout(function() {
+					document.body.scrollTop = document.body.scrollHeight
+				}, 100);
+			})
+			$$("form").submit(function() {
+				mui.toast('暂不支持评论！', {
+					duration: 'long',
+					type: 'div'
+				})
+				return false;
+			});
+			mui("body").on("tap", '.ws-infoUser .right a,.addPing-dianzan,.addPing-shoucang', function() {
+				mui.toast('功能暂未开通！', {
+					duration: 'long',
+					type: 'div'
+				})
+			});
+			//分享操作
+			var shares = {};
+
+			mui.plusReady(function() {
+				plus.share.getServices(function(s) {
+					if(s && s.length > 0) {
+						for(var i = 0; i < s.length; i++) {
+							var t = s[i];
+							shares[t.id] = t;
+						}
+					}
+				}, function() {
+					console.log("获取分享服务列表失败");
+				});
+			});
+
+			//分享链接点击事件
+			document.getElementById("share").addEventListener('tap', function() {
+				var ids = [{
+						id: "weixin",
+						ex: "WXSceneSession"
+					}, {
+						id: "weixin",
+						ex: "WXSceneTimeline"
+					}, {
+						id: "sinaweibo"
+					}, {
+						id: "tencentweibo"
+					}, {
+						id: "qq"
+					}],
+					bts = [{
+						title: "发送给微信好友"
+					}, {
+						title: "分享到微信朋友圈"
+					}, {
+						title: "分享到新浪微博"
+					}, {
+						title: "分享到腾讯微博"
+					}, {
+						title: "分享到QQ"
+					}];
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: bts
+				}, function(e) {
+					var i = e.index;
+					if(i > 0) {
+						var s_id = ids[i - 1].id;
+						var share = shares[s_id];
+						if(share) {
+							if(share.authenticated) {
+								shareMessage(share, ids[i - 1].ex);
+							} else {
+								share.authorize(function() {
+									shareMessage(share, ids[i - 1].ex);
+								}, function(e) {
+									console.log("认证授权失败：" + e.code + " - " + e.message);
+								});
+							}
+						} else {
+							mui.toast("分享失败,请重试！")
+						}
+					}
+				});
+			});
+
+			function shareMessage(share, ex) {
+				var msg = {
+					extra: {
+						scene: ex
+					}
+				};
+				msg.href = "http://www.dcloud.io/hellomui/";
+				msg.title = "最接近原生APP体验的高性能前端框架";
+				msg.content = "我正在体验HelloMUI，果然很流畅，基本看不出和原生App的差距";
+				if(~share.id.indexOf('weibo')) {
+					msg.content += "；体验地址：http://www.dcloud.io/hellomui/";
+				}
+				msg.thumbs = ["_www/images/logo.png"];
+				share.send(msg, function() {
+					console.log("分享到\"" + share.description + "\"成功！ ");
+				}, function(e) {
+					console.log("分享到\"" + share.description + "\"失败: " + e.code + " - " + e.message);
+				});
+			}
+			//时间戳转换成时间格式方法
+			var datetime = function(time) {
+				var date = new Date(parseInt(time) * 1000);
+				var year = date.getFullYear();
+				var mon = date.getMonth() + 1;
+				var day = date.getDate();
+				var hours = date.getHours();
+				var minu = date.getMinutes();
+				var sec = date.getSeconds();
+				return mon + '-' + day + ' ' + hours + ':' + minu;
+			};
+			mui.plusReady(function() {
+				var value = plus.webview.currentWebview().id;
+				mui.ajax(CPACTH + '/m/article/' + value + '.json', {
+					data: '',
+					dataType: 'json', //服务器返回json格式数据
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+
+						var dataJson = data;
+						var datas = dataJson.data;
+						var listBox = datas.recommeds;
+						console.log(JSON.stringify(dataJson));
+						if(dataJson.metaInfo.code == 0) {
+							$$("#wsInfoCont .mui-content-padded >h2").html(datas.article.title);
+							$$("#wsInfoCont .ws-user").text(datas.article.author);
+							$$("#wsInfoCont .ws-pinglun i").text(datas.article.hits);
+							$$("#wsInfoCont .ws-time").text(datetime(datas.article.created));
+							$$("#wsInfoCont .ws-infoText").html(datas.article.content);
+
+							if(datas.count != 0) {
+								for(var i = 0; i < listBox.length; i++) {
+									var li = document.createElement('li');
+									var tuiJ = '';
+									if(listBox[i].recommend == 1) {
+										tuiJ = "<span class='ws-hot'>推荐</span>";
+									}
+
+									if(listBox[i].kind == 1) {
+										li.className = 'mui-table-view-cell mui-media ws-leftImg';
+										li.innerHTML = "<a class='mui-navigate-right' href='ws-info.html' data-wid='" + listBox[i].linkurl + "'><div class='mui-media-body'><h3>" + listBox[i].title + "</h3><div>" + tuiJ + "<span class='ws-user'>" + listBox[i].author + "</span><span class='ws-ping'>" + listBox[i].hits + "查看</span> <span class='ws-time'>" + datetime(listBox[i].created) + "</span></div></div></a>";
+									} else if(listBox[i].kind == 2) {
+										li.className = 'mui-table-view-cell mui-media';
+										li.innerHTML = "<a class='mui-navigate-right' href='ws-info.html' data-wid='" + listBox[i].linkurl + "'><div class='mui-media-body'><h3>" + listBox[i].title + "</h3><div>" + tuiJ + "<span class='ws-user'>" + listBox[i].author + "</span> <span class='ws-ping'>" + listBox[i].hits + "查看</span> <span class='ws-time'>" + datetime(listBox[i].created) + "</span> </div> </div> <img class='mui-media-object mui-pull-left' src='" + listBox[i].url + "'></a>";
+									} else if(listBox[i].kind == 3) {
+										li.className = 'mui-table-view-cell mui-media ws-ggList';
+										li.innerHTML = "<a class='mui-navigate-right' href='ws-info.html' data-wid='" + listBox[i].linkurl + "'><div class='mui-media-body'><h3>" + listBox[i].title + "</h3><div class='ws-ggImg'> <img src='" + listBox[i].imgs[0] + "' alt='' /><img src='" + listBox[i].imgs[1] + "' alt='' /><img src='" + listBox[i].imgs[2] + "' alt='' /></div><div>" + tuiJ + "<span class='ws-user'>" + listBox[i].author + "</span> <span class='ws-ping'>" + listBox[i].hits + "查看</span> <span class='ws-time'>" + datetime(listBox[i].created) + "</span> </div> </div></a>";
+									}
+									document.body.querySelector('.mui-table-view').appendChild(li);
+								}
+								var deceleration = mui.os.ios ? 0.001 : 0.009;
+								mui('.mui-scroll-wrapper').scroll({
+									bounce: false,
+									indicators: true, //是否显示滚动条
+									deceleration:deceleration
+								});
+							}
+
+						} else {
+							mui.toast('网络错误，请重试！', {
+								duration: 'long',
+								type: 'div'
+							})
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+
+			});
+			//主列表点击事件
+			mui('.ws-tuiList').on('tap', 'a', function() {
+				var href = this.getAttribute('href');
+
+				//非plus环境，直接走href跳转
+				if(!mui.os.plus) {
+					location.href = href;
+					return;
+				}
+
+				var id = this.getAttribute("data-wid");
+				if(!id) {
+					id = href;
+				}
+
+				if(href && ~href.indexOf('.html')) {
+					//打开窗口的相关参数
+					var options = {
+						styles: {
+							popGesture: "close"
+						},
+						extras: {
+							id: id
+						}
+					};
+					//如下场景不适用下拉回弹：
+					//1、单webview下拉刷新；2、底部有fixed定位的div的页面
+					if(!~id.indexOf('pullrefresh.html') && !~href.indexOf("examples/tabbar.html") && !~href.indexOf("list-to-detail/listview.html")) {
+						options.styles.bounce = "vertical";
+					}
+					//图标页面需要启动硬件加速
+					if(~id.indexOf('icons.html') || ~id.indexOf("echarts.html")) {
+						options.styles.hardwareAccelerated = true;
+					}
+					if(~id.indexOf('im-chat.html')) {
+						options.extras.acceleration = "none";
+					}
+
+					var titleType = this.getAttribute("data-title-type");
+					if(titleType && titleType.indexOf("native") > -1) { //原生导航
+						options.styles.titleNView = {
+							autoBackButton: true,
+							backgroundColor: '#f7f7f7',
+							titleText: this.innerHTML.trim(),
+							splitLine: {
+								color: '#cccccc'
+							}
+						};
+
+						options.show = {
+							event: 'loaded'
+						}
+						//有原生标题的情况下，就不需要waiting框了
+						options.waiting = {
+							autoShow: false
+						}
+
+						//透明渐变导航,增加类型设置
+						if(titleType == "transparent_native") {
+							options.styles.titleNView.type = "transparent";
+						}
+					} else {
+						//非原生导航，需要设置顶部状态栏占位
+						options.styles.statusbar = {
+							background: "#f7f7f7"
+						}
+					}
+					//打开新窗口
+					mui.openWindow(href, id, options);
+				}
+			});
+		</script>
+	</body>
+
+</html>
